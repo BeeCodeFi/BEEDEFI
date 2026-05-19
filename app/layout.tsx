@@ -34,8 +34,15 @@ export default function RootLayout({
   children: React.ReactNode;
 }) {
   return (
-    <html lang="en" className={`${sora.variable} ${geistMono.variable} dark`}>
-      <body className="min-h-screen overflow-x-hidden">
+    <html
+      lang="en"
+      // Horizontal overflow clipping lives on <html>, not <body>. Putting it on
+      // <body> makes <body> a scroll container, which breaks `position: sticky`
+      // for descendants (notably the Sidebar) — they'd scroll with the page
+      // instead of pinning to the viewport.
+      className={`${sora.variable} ${geistMono.variable} dark overflow-x-hidden`}
+    >
+      <body className="min-h-screen">
         {/*
           Layered background system — each is fixed and pointer-events-none so they never
           intercept interaction. Z-index goes from 0 (deepest) up to 10 (cursor).

@@ -15,17 +15,32 @@ export function Sidebar() {
   const [expanded, setExpanded] = useState(true);
   const pathname = usePathname();
 
+  const width = expanded ? SIDEBAR_WIDTH_EXPANDED : SIDEBAR_WIDTH_COLLAPSED;
+  const spring = { type: "spring" as const, stiffness: 260, damping: 28 };
+
   return (
-    <motion.aside
-      // Animate width itself rather than mounting/unmounting children — see notes in the
-      // Phase 1 walkthrough about why this matters for perceived quality.
-      animate={{
-        width: expanded ? SIDEBAR_WIDTH_EXPANDED : SIDEBAR_WIDTH_COLLAPSED,
-      }}
-      transition={{ type: "spring", stiffness: 260, damping: 28 }}
-      className="sticky top-0 h-screen shrink-0 z-40"
-    >
-      <div className="glass glass-edge h-full flex flex-col px-3 py-5 rounded-r-2xl">
+    <>
+      {/*
+        Layout spacer — sits in the flex container, reserves horizontal space
+        matching the fixed sidebar. Separating layout from paint here is what
+        lets the visible sidebar truly pin to the viewport: a `sticky` element
+        inside a tall flex container gets stretched and breaks; a `fixed`
+        element doesn't care about its parent's height.
+      */}
+      <motion.div
+        animate={{ width }}
+        transition={spring}
+        className="shrink-0"
+        aria-hidden
+      />
+
+      {/* The visible sidebar — fixed to the viewport, never moves on scroll. */}
+      <motion.aside
+        animate={{ width }}
+        transition={spring}
+        className="fixed top-0 left-0 h-screen z-40"
+      >
+        <div className="glass glass-edge h-full flex flex-col px-3 py-5 rounded-r-2xl">
         {/* Brand */}
         <div className="flex items-center gap-3 px-2 mb-8 h-10">
           <div className="relative shrink-0">
@@ -100,7 +115,8 @@ export function Sidebar() {
           </button>
         </div>
       </div>
-    </motion.aside>
+      </motion.aside>
+    </>
   );
 }
 
