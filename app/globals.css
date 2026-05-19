@@ -1,0 +1,120 @@
+@tailwind base;
+@tailwind components;
+@tailwind utilities;
+
+@layer base {
+  :root {
+    color-scheme: dark;
+    /* CSS vars bridge next/font output to Tailwind's fontFamily config */
+    --font-display: "Sora", system-ui, sans-serif;
+    --font-body: "Sora", system-ui, sans-serif;
+    --font-mono: "Geist Mono", ui-monospace, monospace;
+  }
+
+  html,
+  body {
+    @apply bg-bg-0 text-ink-1 font-body antialiased;
+    /* Prevent horizontal scroll from 3D canvases or animated elements bleeding past viewport */
+    overflow-x: hidden;
+  }
+
+  ::selection {
+    background: rgba(94, 240, 255, 0.25);
+    color: #fff;
+  }
+
+  /* Custom scrollbar — subtle, on-theme. WebKit only; Firefox uses scrollbar-color below. */
+  ::-webkit-scrollbar {
+    width: 10px;
+    height: 10px;
+  }
+  ::-webkit-scrollbar-track {
+    background: transparent;
+  }
+  ::-webkit-scrollbar-thumb {
+    background: rgba(255, 255, 255, 0.08);
+    border-radius: 999px;
+  }
+  ::-webkit-scrollbar-thumb:hover {
+    background: rgba(94, 240, 255, 0.25);
+  }
+  * {
+    scrollbar-color: rgba(255, 255, 255, 0.08) transparent;
+    scrollbar-width: thin;
+  }
+
+  /* Reduced motion: the most important accessibility commitment in an animation-heavy app.
+     We collapse durations rather than removing animations entirely — preserves layout,
+     skips the cinema. */
+  @media (prefers-reduced-motion: reduce) {
+    *,
+    *::before,
+    *::after {
+      animation-duration: 0.01ms !important;
+      animation-iteration-count: 1 !important;
+      transition-duration: 0.01ms !important;
+      scroll-behavior: auto !important;
+    }
+  }
+}
+
+@layer components {
+  /* The canonical glass panel. Every translucent surface in the app composes this class.
+     The trick to good glassmorphism is the inset highlight on top — it sells the illusion
+     of a physical pane catching light. */
+  .glass {
+    @apply relative bg-white/[0.05] backdrop-blur-xl border border-edge shadow-inset-hi;
+  }
+
+  .glass-strong {
+    @apply relative bg-white/[0.08] backdrop-blur-2xl border border-edge-strong shadow-inset-hi;
+  }
+
+  /* Thin top-edge highlight that runs across the width of a panel.
+     Apply via ::before by adding `glass-edge` alongside `glass`. */
+  .glass-edge::before {
+    content: "";
+    @apply absolute inset-x-0 top-0 h-px pointer-events-none;
+    background: linear-gradient(
+      90deg,
+      transparent,
+      rgba(94, 240, 255, 0.4),
+      transparent
+    );
+  }
+
+  /* Used on the landing page and other dramatic surfaces — a slow drifting ambient gradient */
+  .ambient-mesh {
+    @apply bg-mesh-1 animate-drift;
+  }
+
+  /* Faint grid floor — applied as a fixed-position layer in the root layout */
+  .grid-floor {
+    background-image:
+      linear-gradient(rgba(94, 240, 255, 0.05) 1px, transparent 1px),
+      linear-gradient(90deg, rgba(94, 240, 255, 0.05) 1px, transparent 1px);
+    background-size: 64px 64px;
+    mask-image: radial-gradient(ellipse 80% 60% at 50% 40%, black 30%, transparent 80%);
+  }
+
+  /* Text utility — gradient signal text used sparingly for emphasis */
+  .text-signal-grad {
+    @apply bg-clip-text text-transparent;
+    background-image: linear-gradient(135deg, #5ef0ff 0%, #a78bff 50%, #ff5ed4 100%);
+  }
+}
+
+@layer utilities {
+  /* A tiny scan-line overlay you can drop on any element to add CRT/terminal flavor */
+  .scanlines::after {
+    content: "";
+    @apply absolute inset-0 pointer-events-none opacity-[0.04];
+    background: repeating-linear-gradient(
+      0deg,
+      rgba(255, 255, 255, 0.5) 0px,
+      rgba(255, 255, 255, 0.5) 1px,
+      transparent 1px,
+      transparent 3px
+    );
+  }
+}
