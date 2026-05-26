@@ -19,7 +19,7 @@ export function PhasePlaceholder({
   description: string;
 }) {
   return (
-    <div className="min-h-screen flex flex-col items-center justify-center px-8">
+    <div className="min-h-screen flex flex-col items-center justify-center px-4 sm:px-6 md:px-8 py-12">
       <motion.div
         initial={{ opacity: 0, y: 12 }}
         animate={{ opacity: 1, y: 0 }}

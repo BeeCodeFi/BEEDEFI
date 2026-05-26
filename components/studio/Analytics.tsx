@@ -38,17 +38,23 @@ export function Analytics({ content }: Props) {
         </div>
 
         <div className="rounded-xl border border-edge overflow-hidden">
-          {/* Header row */}
-          <div className="grid grid-cols-[1fr_80px_80px_120px_120px] gap-4 px-4 py-3 bg-white/[0.02] border-b border-edge">
-            <span className="text-[10px] font-mono uppercase tracking-wider text-ink-3">Title</span>
-            <span className="text-[10px] font-mono uppercase tracking-wider text-ink-3 text-right">Views</span>
-            <span className="text-[10px] font-mono uppercase tracking-wider text-ink-3 text-right">CTR</span>
-            <span className="text-[10px] font-mono uppercase tracking-wider text-ink-3 text-right">Retention</span>
-            <span className="text-[10px] font-mono uppercase tracking-wider text-ink-3 text-right">Engagement</span>
+          {/* Table scrolls horizontally on narrow viewports — the fixed column
+              widths total ~560px, so anything below md would crush the title. */}
+          <div className="scroll-touch overflow-x-auto">
+            <div className="min-w-[640px]">
+              {/* Header row */}
+              <div className="grid grid-cols-[1fr_80px_80px_120px_120px] gap-4 px-4 py-3 bg-white/[0.02] border-b border-edge">
+                <span className="text-[10px] font-mono uppercase tracking-wider text-ink-3">Title</span>
+                <span className="text-[10px] font-mono uppercase tracking-wider text-ink-3 text-right">Views</span>
+                <span className="text-[10px] font-mono uppercase tracking-wider text-ink-3 text-right">CTR</span>
+                <span className="text-[10px] font-mono uppercase tracking-wider text-ink-3 text-right">Retention</span>
+                <span className="text-[10px] font-mono uppercase tracking-wider text-ink-3 text-right">Engagement</span>
+              </div>
+              {content.map((row, i) => (
+                <Row key={row.id} row={row} index={i} maxViews={stats.maxViews} />
+              ))}
+            </div>
           </div>
-          {content.map((row, i) => (
-            <Row key={row.id} row={row} index={i} maxViews={stats.maxViews} />
-          ))}
         </div>
       </section>
 

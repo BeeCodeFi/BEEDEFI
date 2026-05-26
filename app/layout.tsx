@@ -1,9 +1,8 @@
-import type { Metadata } from "next";
+import type { Metadata, Viewport } from "next";
 import { Sora, Geist_Mono } from "next/font/google";
 import "./globals.css";
-import { Sidebar } from "@/components/layout/Sidebar";
+import { AppShell } from "@/components/layout/AppShell";
 import { CursorGlow } from "@/components/layout/CursorGlow";
-import { PageTransition } from "@/components/layout/PageTransition";
 import { AmbientBackdrop } from "@/components/fx/AmbientBackdrop";
 
 // next/font generates self-hosted font files at build time and exposes them as CSS variables.
@@ -28,6 +27,15 @@ export const metadata: Metadata = {
     "An AI-native personal workspace for content, learning, career, and growth.",
 };
 
+// Mobile viewport defaults. `viewportFit: cover` is what makes
+// `env(safe-area-inset-*)` actually have non-zero values on notched devices.
+export const viewport: Viewport = {
+  width: "device-width",
+  initialScale: 1,
+  viewportFit: "cover",
+  themeColor: "#05060a",
+};
+
 export default function RootLayout({
   children,
 }: {
@@ -43,20 +51,8 @@ export default function RootLayout({
       className={`${sora.variable} ${geistMono.variable} dark overflow-x-hidden`}
     >
       <body className="min-h-screen">
-        {/*
-          Layered background system — each is fixed and pointer-events-none so they never
-          intercept interaction. Z-index goes from 0 (deepest) up to 10 (cursor).
-        */}
         <AmbientBackdrop />
-
-        <div className="relative z-10 flex min-h-screen">
-          <Sidebar />
-          <main className="flex-1 min-w-0 relative">
-            <PageTransition>{children}</PageTransition>
-          </main>
-        </div>
-
-        {/* Cursor glow sits on top of everything, ignores pointer events */}
+        <AppShell>{children}</AppShell>
         <CursorGlow />
       </body>
     </html>

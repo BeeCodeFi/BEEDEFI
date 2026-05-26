@@ -50,9 +50,9 @@ export default function DashboardPage() {
     hour < 5 ? "Still awake" : hour < 12 ? "Morning" : hour < 18 ? "Afternoon" : "Evening";
 
   return (
-    <div className="relative min-h-screen px-8 lg:px-16 pt-12 pb-32">
+    <div className="relative min-h-screen px-4 sm:px-6 md:px-8 lg:px-12 xl:px-16 pt-6 sm:pt-10 lg:pt-12 pb-32">
       {/* HERO ZONE — orb + greeting */}
-      <section className="relative h-[60vh] min-h-[480px] flex flex-col items-center justify-center text-center">
+      <section className="relative h-[55vh] min-h-[380px] sm:min-h-[440px] md:h-[60vh] md:min-h-[480px] flex flex-col items-center justify-center text-center">
         {/* Orb sits as an absolute layer so the text overlays it cleanly */}
         <div className="absolute inset-0">
           <OrbScene />
@@ -111,7 +111,7 @@ export default function DashboardPage() {
       </section>
 
       {/* METRICS STRIP — glanceable numbers */}
-      <section className="mt-24 grid grid-cols-2 md:grid-cols-4 gap-4">
+      <section className="mt-12 sm:mt-16 md:mt-24 grid grid-cols-2 md:grid-cols-4 gap-3 sm:gap-4">
         {METRICS.map((metric, i) => (
           <motion.div
             key={metric.label}
@@ -131,8 +131,8 @@ export default function DashboardPage() {
       </section>
 
       {/* FEATURE GRID — entry points to each section */}
-      <section className="mt-12">
-        <div className="flex items-end justify-between mb-6">
+      <section className="mt-10 sm:mt-12">
+        <div className="flex flex-wrap items-end justify-between gap-3 mb-5 sm:mb-6">
           <h2 className="font-display text-display-md font-light tracking-tight">
             Your workspace
           </h2>
@@ -141,7 +141,7 @@ export default function DashboardPage() {
           </span>
         </div>
 
-        <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-4">
+        <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-3 sm:gap-4">
           {FEATURES.map((feature, i) => (
             <motion.div
               key={feature.title}
@@ -157,14 +157,14 @@ export default function DashboardPage() {
       </section>
 
       {/* AI thinking panel — example of a fuller content surface */}
-      <section className="mt-12">
+      <section className="mt-10 sm:mt-12">
         <motion.div
           initial={{ opacity: 0, y: 16 }}
           animate={{ opacity: 1, y: 0 }}
           transition={{ delay: 1.2, duration: 0.6 }}
         >
-          <GlassPanel edge className="p-8">
-            <div className="flex items-start gap-4">
+          <GlassPanel edge className="p-5 sm:p-6 md:p-8">
+            <div className="flex items-start gap-3 sm:gap-4">
               <div className="relative shrink-0">
                 <div className="w-10 h-10 rounded-full border border-signal-magenta/40 flex items-center justify-center bg-signal-magenta/5">
                   <Sparkles className="w-4 h-4 text-signal-magenta" strokeWidth={1.5} />

@@ -26,9 +26,9 @@ export default async function LearnPage() {
   const activityForFeed = snapshot.recentActivity.map(toActivityItem);
 
   return (
-    <div className="relative min-h-screen px-8 lg:px-16 pt-12 pb-32">
+    <div className="relative min-h-screen px-4 sm:px-6 md:px-8 lg:px-12 xl:px-16 pt-6 sm:pt-10 lg:pt-12 pb-32">
       {/* HEADER */}
-      <header className="flex flex-wrap items-end justify-between gap-6 mb-10">
+      <header className="flex flex-wrap items-end justify-between gap-4 sm:gap-6 mb-8 sm:mb-10">
         <div>
           <p className="text-[10px] font-mono uppercase tracking-[0.25em] text-signal-amber mb-2">
             Learning · powered by BeeCodeFi
@@ -61,8 +61,8 @@ export default async function LearnPage() {
       {/* CURRENT PATH — big hero card */}
       <section className="mb-6">
         {snapshot.currentPath ? (
-          <GlassPanel edge className="p-6 md:p-8">
-            <div className="flex flex-col md:flex-row md:items-center gap-6 md:gap-10">
+          <GlassPanel edge className="p-5 sm:p-6 md:p-8">
+            <div className="flex flex-col md:flex-row md:items-center gap-5 sm:gap-6 md:gap-10">
               <ProgressRing
                 value={snapshot.currentPath.progress}
                 accent="amber"

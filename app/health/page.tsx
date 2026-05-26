@@ -28,9 +28,9 @@ export default async function HealthPage() {
   const energyAccent = ENERGY_ACCENT[snap.energyBand];
 
   return (
-    <div className="relative min-h-screen px-8 lg:px-16 pt-12 pb-32">
+    <div className="relative min-h-screen px-4 sm:px-6 md:px-8 lg:px-12 xl:px-16 pt-6 sm:pt-10 lg:pt-12 pb-32">
       {/* HEADER */}
-      <header className="mb-10">
+      <header className="mb-8 sm:mb-10">
         <p className="text-[10px] font-mono uppercase tracking-[0.25em] text-signal-cyan mb-2">
           Phase 05 · Health
         </p>
@@ -44,8 +44,8 @@ export default async function HealthPage() {
 
       {/* ENERGY HERO */}
       <section className="mb-6">
-        <GlassPanel edge className="p-6 md:p-8">
-          <div className="flex flex-col md:flex-row md:items-center gap-6 md:gap-10">
+        <GlassPanel edge className="p-5 sm:p-6 md:p-8">
+          <div className="flex flex-col md:flex-row md:items-center gap-5 sm:gap-6 md:gap-10">
             <ProgressRing
               value={snap.energyIndex}
               accent={energyAccent}
@@ -71,7 +71,7 @@ export default async function HealthPage() {
             </div>
 
             {/* Inline today vitals */}
-            <div className="grid grid-cols-2 gap-4 md:border-l md:border-edge md:pl-8">
+            <div className="grid grid-cols-2 gap-4 md:border-l md:border-edge md:pl-6 lg:pl-8">
               <VitalMini icon={Moon}       label="Sleep"      value={`${snap.today.sleepHours}h`} sub={`q${snap.today.sleepQuality}`} />
               <VitalMini icon={Footprints} label="Steps"      value={fmtK(snap.today.steps)}      sub={`/${fmtK(snap.targets.steps)}`} />
               <VitalMini icon={Zap}        label="Active"     value={`${snap.today.activeMinutes}m`} sub={`/${snap.targets.activeMinutes}m`} />
@@ -82,7 +82,7 @@ export default async function HealthPage() {
       </section>
 
       {/* CHARTS GRID */}
-      <section className="grid grid-cols-1 lg:grid-cols-3 gap-4 mb-6">
+      <section className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-3 sm:gap-4 mb-6">
         <ChartCard
           title="Sleep · 7 days"
           icon={Moon}
@@ -110,7 +110,7 @@ export default async function HealthPage() {
       </section>
 
       {/* EVENTS */}
-      <section className="grid grid-cols-1 lg:grid-cols-2 gap-4">
+      <section className="grid grid-cols-1 lg:grid-cols-2 gap-3 sm:gap-4">
         <Card accent="cyan" interactive={false}>
           <CardHeader>
             <CardTitle>Today&rsquo;s events</CardTitle>

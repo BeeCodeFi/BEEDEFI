@@ -11,7 +11,7 @@ export default async function BrainPage() {
   const snapshot = await getBrainSnapshot();
 
   return (
-    <div className="relative min-h-screen px-8 lg:px-16 pt-12 pb-32">
+    <div className="relative min-h-screen px-4 sm:px-6 md:px-8 lg:px-12 xl:px-16 pt-6 sm:pt-10 lg:pt-12 pb-32">
       {/* HEADER */}
       <header className="mb-8">
         <p className="text-[10px] font-mono uppercase tracking-[0.25em] text-signal-violet mb-2">

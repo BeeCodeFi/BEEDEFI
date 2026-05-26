@@ -12,8 +12,8 @@ export default async function StudioPage() {
   const liveAi = isLiveAiConfigured();
 
   return (
-    <div className="relative min-h-screen px-8 lg:px-16 pt-12 pb-32">
-      <header className="flex flex-wrap items-end justify-between gap-6 mb-8">
+    <div className="relative min-h-screen px-4 sm:px-6 md:px-8 lg:px-12 xl:px-16 pt-6 sm:pt-10 lg:pt-12 pb-32">
+      <header className="flex flex-wrap items-end justify-between gap-4 sm:gap-6 mb-6 sm:mb-8">
         <div>
           <p className="text-[10px] font-mono uppercase tracking-[0.25em] text-signal-magenta mb-2">
             Phase 05 · Creator studio

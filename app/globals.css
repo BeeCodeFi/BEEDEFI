@@ -16,6 +16,32 @@
     @apply bg-bg-0 text-ink-1 font-body antialiased;
     /* Prevent horizontal scroll from 3D canvases or animated elements bleeding past viewport */
     overflow-x: hidden;
+    /* Mobile chrome highlights (the gray-blue flash on tap) clash with the
+       cinematic surface — kill them globally and let our own active/hover
+       styles do the talking. */
+    -webkit-tap-highlight-color: transparent;
+    /* Reasonable default for touch UIs: disable double-tap zoom on
+       interactive elements while leaving pinch-zoom intact at the page
+       level (we only restrict on buttons/links via touch-action below). */
+    text-size-adjust: 100%;
+    -webkit-text-size-adjust: 100%;
+  }
+
+  /* Touch targets feel snappier when the 300ms tap delay is killed. We apply
+     this at the element level so pinch-zoom on content still works. */
+  button,
+  a {
+    touch-action: manipulation;
+  }
+
+  /* Mobile-only nicety: smooth momentum scrolling in any horizontally
+     scrollable region (used by the career pipeline on phones). */
+  .scroll-touch {
+    -webkit-overflow-scrolling: touch;
+    scrollbar-width: none;
+  }
+  .scroll-touch::-webkit-scrollbar {
+    display: none;
   }
 
   ::selection {

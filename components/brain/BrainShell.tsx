@@ -40,12 +40,12 @@ export function BrainShell({ initial }: Props) {
         initial={{ opacity: 0, scale: 0.98 }}
         animate={{ opacity: 1, scale: 1 }}
         transition={{ duration: 0.6, ease: [0.16, 1, 0.3, 1] }}
-        className="mb-8"
+        className="mb-6 sm:mb-8"
       >
         <KnowledgeGraph notes={notes} links={initial.links} />
       </motion.section>
 
-      <section className="grid grid-cols-1 lg:grid-cols-2 gap-6">
+      <section className="grid grid-cols-1 lg:grid-cols-2 gap-4 sm:gap-6">
         <div>
           <div className="flex items-end justify-between mb-4">
             <h2 className="font-display text-xl font-light tracking-tight text-ink-1">

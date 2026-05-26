@@ -39,13 +39,13 @@ export default function AgentsPage() {
   };
 
   return (
-    <div className="relative min-h-screen px-8 lg:px-16 pt-12 pb-32">
+    <div className="relative min-h-screen px-4 sm:px-6 md:px-8 lg:px-12 xl:px-16 pt-6 sm:pt-10 lg:pt-12 pb-32">
       {/* HEADER */}
       <motion.header
         initial={{ opacity: 0, y: 12 }}
         animate={{ opacity: 1, y: 0 }}
         transition={{ duration: 0.5, ease: [0.16, 1, 0.3, 1] }}
-        className="flex items-end justify-between mb-8"
+        className="flex flex-wrap items-end justify-between gap-6 mb-8"
       >
         <div>
           <p className="text-[10px] font-mono uppercase tracking-[0.25em] text-signal-violet mb-2">
@@ -59,7 +59,7 @@ export default function AgentsPage() {
             who's waiting, and what's moving through the system right now.
           </p>
         </div>
-        <div className="hidden md:flex items-center gap-6 text-right">
+        <div className="flex items-center gap-4 sm:gap-6 text-right">
           <Stat label="Working"  value={counts.working}  accent="cyan" />
           <Stat label="Thinking" value={counts.thinking} accent="magenta" />
           <Stat label="Blocked"  value={counts.blocked}  accent="amber" />
@@ -74,7 +74,7 @@ export default function AgentsPage() {
         transition={{ delay: 0.15, duration: 0.6, ease: [0.16, 1, 0.3, 1] }}
         className="mb-10"
       >
-        <GlassPanel edge className="p-4 md:p-6">
+        <GlassPanel edge className="p-3 sm:p-4 md:p-6">
           <AgentNetwork />
         </GlassPanel>
       </motion.section>
@@ -90,7 +90,7 @@ export default function AgentsPage() {
           </span>
         </div>
 
-        <div className="grid grid-cols-1 md:grid-cols-2 xl:grid-cols-4 gap-4">
+        <div className="grid grid-cols-1 sm:grid-cols-2 xl:grid-cols-4 gap-3 sm:gap-4">
           {agents.map((agent, i) => (
             <motion.div
               key={agent.id}

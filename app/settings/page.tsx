@@ -28,8 +28,8 @@ export default async function SettingsPage() {
   const memStats = await getMemoryStatsAction();
 
   return (
-    <div className="relative min-h-screen px-8 lg:px-16 pt-12 pb-32">
-      <header className="mb-10">
+    <div className="relative min-h-screen px-4 sm:px-6 md:px-8 lg:px-12 xl:px-16 pt-6 sm:pt-10 lg:pt-12 pb-32">
+      <header className="mb-8 sm:mb-10">
         <p className="text-[10px] font-mono uppercase tracking-[0.25em] text-ink-3 mb-2">
           Workspace · settings
         </p>
@@ -43,7 +43,7 @@ export default async function SettingsPage() {
         </p>
       </header>
 
-      <div className="grid grid-cols-1 lg:grid-cols-2 gap-4">
+      <div className="grid grid-cols-1 lg:grid-cols-2 gap-3 sm:gap-4">
         {/* AI PROVIDER */}
         <Card accent="magenta" interactive={false}>
           <CardHeader>

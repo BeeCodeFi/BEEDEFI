@@ -48,8 +48,8 @@ export default async function CareerPage() {
   }));
 
   return (
-    <div className="relative min-h-screen px-8 lg:px-16 pt-12 pb-32">
-      <header className="flex flex-wrap items-end justify-between gap-6 mb-10">
+    <div className="relative min-h-screen px-4 sm:px-6 md:px-8 lg:px-12 xl:px-16 pt-6 sm:pt-10 lg:pt-12 pb-32">
+      <header className="flex flex-wrap items-end justify-between gap-4 sm:gap-6 mb-8 sm:mb-10">
         <div>
           <p className="text-[10px] font-mono uppercase tracking-[0.25em] text-signal-cyan mb-2">
             Phase 05 · Career
@@ -63,7 +63,7 @@ export default async function CareerPage() {
           </p>
         </div>
 
-        <div className="flex items-center gap-6">
+        <div className="flex items-center gap-4 sm:gap-6">
           <Stat label="Active leads"  value={`${snap.stats.activeLeads}`} accent="cyan" />
           <Stat label="Response rate" value={`${snap.stats.responseRatePct}%`} accent="magenta" />
           <Stat label="Avg reply"     value={`${snap.stats.avgDaysToReply}d`} accent="amber" />
@@ -81,9 +81,14 @@ export default async function CareerPage() {
           </span>
         </div>
 
-        <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-5 gap-3">
+        {/* Mobile: horizontal scroll so the 5 stages stay legible side-by-side
+            rather than collapsing into a single column. Each card-column gets
+            a fixed min-width on small screens; on lg+ the layout becomes a
+            balanced 5-column grid. */}
+        <div className="scroll-touch -mx-4 sm:-mx-6 md:-mx-8 lg:mx-0 overflow-x-auto lg:overflow-visible">
+          <div className="flex lg:grid lg:grid-cols-5 gap-3 px-4 sm:px-6 md:px-8 lg:px-0 snap-x snap-mandatory lg:snap-none">
           {grouped.map(({ stage, items }) => (
-            <div key={stage} className="flex flex-col">
+            <div key={stage} className="flex flex-col shrink-0 w-[80vw] sm:w-[42vw] md:w-[28vw] lg:w-auto snap-start">
               <div className={cn(
                 "flex items-center justify-between px-3 py-2 rounded-t-lg border-b",
                 ACCENT_BORDER[STAGE_ACCENT[stage]],
@@ -110,6 +115,7 @@ export default async function CareerPage() {
               </div>
             </div>
           ))}
+          </div>
         </div>
       </section>
 
@@ -124,7 +130,7 @@ export default async function CareerPage() {
           </span>
         </div>
 
-        <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-4">
+        <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-3 sm:gap-4">
           {snap.prep.map((p) => (
             <PrepCard key={p.id} item={p} />
           ))}

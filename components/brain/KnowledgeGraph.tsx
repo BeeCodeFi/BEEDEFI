@@ -40,7 +40,7 @@ export function KnowledgeGraph({ notes, links }: Props) {
   }
 
   return (
-    <div className="relative h-[520px] rounded-2xl overflow-hidden border border-edge">
+    <div className="relative h-[380px] sm:h-[440px] md:h-[520px] rounded-2xl overflow-hidden border border-edge">
       <Canvas
         camera={{ position: [0, 0, 14], fov: 45 }}
         dpr={[1, 1.5]}
