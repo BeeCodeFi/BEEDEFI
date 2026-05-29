@@ -29,6 +29,11 @@ export default function LearnPage() {
   const stats = useBeeCodeFiStats();
   const handleSaved = useCallback(() => setRefreshKey((k) => k + 1), []);
 
+  // Use the higher of BeeCodeFi-scraped vs localStorage completion counts
+  const coursesCompleted = Math.max(stats.completedCourses, snapshot.coursesCompleted);
+  const quizzesCompleted = Math.max(stats.completedQuizzes, snapshot.quizzesCompleted);
+  const tutorialsCompleted = Math.max(stats.completedTutorials, snapshot.tutorialsCompleted);
+
   // Recent activity uses the same renderer as the agent dashboard, so we map
   // BeeCodeFi's typed events into the generic activity shape.
   const activityForFeed = snapshot.recentActivity.map(toActivityItem);
@@ -74,7 +79,7 @@ export default function LearnPage() {
           </div>
           <div>
             <p className="font-display font-light text-2xl tabular-nums text-ink-1">
-              {snapshot.coursesCompleted}
+              {coursesCompleted}
               <span className="text-sm text-ink-3">/{stats.totalCourses}</span>
             </p>
             <p className="text-[10px] font-mono uppercase tracking-wider text-ink-3">
@@ -88,7 +93,7 @@ export default function LearnPage() {
           </div>
           <div>
             <p className="font-display font-light text-2xl tabular-nums text-ink-1">
-              {snapshot.quizzesCompleted}
+              {quizzesCompleted}
               <span className="text-sm text-ink-3">/{stats.totalQuizzes}</span>
             </p>
             <p className="text-[10px] font-mono uppercase tracking-wider text-ink-3">
@@ -102,7 +107,7 @@ export default function LearnPage() {
           </div>
           <div>
             <p className="font-display font-light text-2xl tabular-nums text-ink-1">
-              {snapshot.tutorialsCompleted}
+              {tutorialsCompleted}
               <span className="text-sm text-ink-3">/{stats.totalTutorials}</span>
             </p>
             <p className="text-[10px] font-mono uppercase tracking-wider text-ink-3">

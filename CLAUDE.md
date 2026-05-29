@@ -72,7 +72,7 @@ Phase 4 builds the second brain at `/brain` with a graph-based knowledge visuali
 
 Phase 5 builds the creator studio at `/studio` with script generator, hook lab, thumbnail ideation, and analytics. This is also where the learning, career, and health routes get filled in.
 
-Phase 6 is the only phase that requires backend services. It introduces the AI integration via OpenRouter (using free models — verify current availability when starting this phase, model offerings shift), an optional Supabase free-tier database for persistence, and the multi-agent orchestration layer. The architectural challenge here is the memory manager and prompt manager — design these as plain TypeScript classes in `lib/ai/` with clear interfaces, so they can be swapped or extended.
+Phase 6 is the only phase that requires backend services. It introduces the AI integration via OpenRouter (using free models — verify current availability when starting this phase, model offerings shift), an optional Supabase free-tier database for persistence, and the multi-agent orchestration layer. BeeCodeFi already uses NeonDB (Postgres), so direct database reads for learning progress are possible by adding `BEECODEFI_DATABASE_URL` to `.env` and using `@neondatabase/serverless`. The architectural challenge here is the memory manager and prompt manager — design these as plain TypeScript classes in `lib/ai/` with clear interfaces, so they can be swapped or extended.
 
 ## How to start a session productively
 

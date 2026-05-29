@@ -7,8 +7,12 @@ export type BeeCodeFiStats = {
   totalLessons: number;
   totalQuizzes: number;
   totalQuestions: number;
+  /** Completion counts scraped from BeeCodeFi pages */
+  completedQuizzes: number;
+  completedCourses: number;
+  completedTutorials: number;
   tutorials: { name: string; lessons: number }[];
-  quizCategories: { name: string; topics: number }[];
+  quizCategories: { name: string; topics: number; completed: number }[];
   fetchedAt: string;
 };
 
@@ -59,12 +63,20 @@ async function fetchStats(): Promise<BeeCodeFiStats> {
   const totalQuestionsMatch = quizHtml.match(/(\d+)\s*(?:<[^>]*>)*\s*Questions/i);
   const totalQuestions = totalQuestionsMatch ? parseInt(totalQuestionsMatch[1], 10) : 0;
 
-  // Extract quiz categories: "6 topics" per category
-  const quizCategories: { name: string; topics: number }[] = [];
-  const categoryPattern = /(HTML\s*Fundamentals|CSS\s*Mastery|JavaScript\s*Essentials)[^]*?(\d+)\s*topics/gi;
+  // Overall quiz completion: "X/Y Completed"
+  const quizCompletedMatch = quizHtml.match(/(\d+)\s*\/\s*\d+\s*(?:<[^>]*>)*\s*Completed/i);
+  const completedQuizzes = quizCompletedMatch ? parseInt(quizCompletedMatch[1], 10) : 0;
+
+  // Extract quiz categories: "X/Y completed" per category
+  const quizCategories: { name: string; topics: number; completed: number }[] = [];
+  const categoryPattern = /(HTML\s*Fundamentals|CSS\s*Mastery|JavaScript\s*Essentials)[\s\S]*?(\d+)\s*topics[\s\S]*?(\d+)\s*\/\s*\d+\s*completed/gi;
   let catMatch: RegExpExecArray | null;
   while ((catMatch = categoryPattern.exec(quizHtml)) !== null) {
-    quizCategories.push({ name: catMatch[1].trim(), topics: parseInt(catMatch[2], 10) });
+    quizCategories.push({
+      name: catMatch[1].trim(),
+      topics: parseInt(catMatch[2], 10),
+      completed: parseInt(catMatch[3], 10),
+    });
   }
 
   // --- Courses page ---
@@ -74,6 +86,21 @@ async function fetchStats(): Promise<BeeCodeFiStats> {
   const totalVideosMatch = coursesHtml.match(/(\d+)\s*Videos/i);
   const totalCourseVideos = totalVideosMatch ? parseInt(totalVideosMatch[1], 10) : 0;
 
+  // Completed tutorials = count tutorial tracks that are fully done
+  // For now, we can't determine per-tutorial completion from the page,
+  // so we count course completion from courses page
+  const courseCompletedMatch = coursesHtml.match(/Mark(?:ed)?\s+as\s+Complete[d]?/gi);
+  const completedCourses = coursesHtml.includes('Completed') ? (coursesHtml.match(/Completed/gi)?.length ?? 0) : 0;
+
+  // Count tutorial tracks completed — look for completion indicators
+  const tutCompletedPattern = /(\d+)\s*\/\s*\d+\s*lessons?\s*completed/gi;
+  let tutCompletedCount = 0;
+  let tutMatch: RegExpExecArray | null;
+  while ((tutMatch = tutCompletedPattern.exec(tutorialsHtml)) !== null) {
+    const done = parseInt(tutMatch[1], 10);
+    if (done > 0) tutCompletedCount++;
+  }
+
   return {
     totalCourses: totalCourses || 1,
     totalCourseVideos: totalCourseVideos || 10,
@@ -81,6 +108,9 @@ async function fetchStats(): Promise<BeeCodeFiStats> {
     totalLessons: totalLessons || 35,
     totalQuizzes: totalQuizzes || 18,
     totalQuestions: totalQuestions || 90,
+    completedQuizzes,
+    completedCourses,
+    completedTutorials: tutCompletedCount,
     tutorials,
     quizCategories,
     fetchedAt: new Date().toISOString(),
@@ -103,6 +133,9 @@ export async function GET() {
         totalLessons: 35,
         totalQuizzes: 18,
         totalQuestions: 90,
+        completedQuizzes: 0,
+        completedCourses: 0,
+        completedTutorials: 0,
         tutorials: [],
         quizCategories: [],
         fetchedAt: new Date().toISOString(),

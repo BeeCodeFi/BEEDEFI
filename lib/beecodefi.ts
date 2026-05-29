@@ -5,14 +5,10 @@
  * that owns the canonical learning state for this user. BEEDEFI's /learn route is
  * a surface over that data + a deep-link into the real app.
  *
- * Right now BeeCodeFi runs on SQLite, which doesn't play well with serverless
- * reads from another origin. Once it migrates to NeonDB, the body of
- * getLearningSnapshot() becomes a real query — the *signature* is final.
- *
- * When wiring this for real:
- *   1. Add `DATABASE_URL` to .env pointing at the Neon read replica
+ * BeeCodeFi uses NeonDB (Postgres). To wire direct reads:
+ *   1. Add `BEECODEFI_DATABASE_URL` to .env pointing at the Neon read replica
  *   2. Add a postgres driver (recommended: `@neondatabase/serverless`)
- *   3. Replace MOCK_SNAPSHOT with the query + mapping
+ *   3. Replace the scraping approach with real SQL queries
  *   4. Keep the shape of LearningSnapshot intact — components consume it as-is
  */
 
@@ -92,8 +88,12 @@ export type BeeCodeFiStats = {
   totalLessons: number;
   totalQuizzes: number;
   totalQuestions: number;
+  /** Completion counts scraped from BeeCodeFi pages */
+  completedQuizzes: number;
+  completedCourses: number;
+  completedTutorials: number;
   tutorials: { name: string; lessons: number }[];
-  quizCategories: { name: string; topics: number }[];
+  quizCategories: { name: string; topics: number; completed: number }[];
   fetchedAt: string;
 };
 
@@ -104,6 +104,9 @@ export const BEECODEFI_STATS_FALLBACK: BeeCodeFiStats = {
   totalQuestions: 90,
   totalCourses: 1,
   totalCourseVideos: 10,
+  completedQuizzes: 0,
+  completedCourses: 0,
+  completedTutorials: 0,
   tutorials: [],
   quizCategories: [],
   fetchedAt: "",
