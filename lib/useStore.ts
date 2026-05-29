@@ -18,7 +18,8 @@ import type { BrainSnapshot } from "./brain";
 import type { CareerSnapshot, ApplicationStage } from "./career";
 import type { HealthSnapshot } from "./health";
 import type { StudioSnapshot } from "./studio";
-import type { LearningSnapshot } from "./beecodefi";
+import type { LearningSnapshot, BeeCodeFiStats } from "./beecodefi";
+import { BEECODEFI_STATS_FALLBACK } from "./beecodefi";
 
 /**
  * Client-side hooks that read from localStorage, with fallback to the
@@ -170,4 +171,25 @@ export function useLearningData(refreshKey = 0): LearningSnapshot {
   }, [refreshKey]);
 
   return snapshot;
+}
+
+/**
+ * Fetches live platform stats from BeeCodeFi via the /api/beecodefi route.
+ * Falls back to hardcoded defaults if the fetch fails.
+ */
+export function useBeeCodeFiStats(): BeeCodeFiStats {
+  const [stats, setStats] = useState<BeeCodeFiStats>(BEECODEFI_STATS_FALLBACK);
+
+  useEffect(() => {
+    let cancelled = false;
+    fetch("/api/beecodefi")
+      .then((r) => (r.ok ? r.json() : null))
+      .then((data: BeeCodeFiStats | null) => {
+        if (!cancelled && data) setStats(data);
+      })
+      .catch(() => {});
+    return () => { cancelled = true; };
+  }, []);
+
+  return stats;
 }

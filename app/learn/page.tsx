@@ -13,7 +13,7 @@ import {
   type LearningActivity,
   type ReviewItem,
 } from "@/lib/beecodefi";
-import { useLearningData } from "@/lib/useStore";
+import { useLearningData, useBeeCodeFiStats } from "@/lib/useStore";
 
 /**
  * Surface over the user's BeeCodeFi learning state. Server component — the
@@ -26,6 +26,7 @@ import { useLearningData } from "@/lib/useStore";
 export default function LearnPage() {
   const [refreshKey, setRefreshKey] = useState(0);
   const snapshot = useLearningData(refreshKey);
+  const stats = useBeeCodeFiStats();
   const handleSaved = useCallback(() => setRefreshKey((k) => k + 1), []);
 
   // Recent activity uses the same renderer as the agent dashboard, so we map
@@ -74,6 +75,7 @@ export default function LearnPage() {
           <div>
             <p className="font-display font-light text-2xl tabular-nums text-ink-1">
               {snapshot.coursesCompleted}
+              <span className="text-sm text-ink-3">/{stats.totalCourses}</span>
             </p>
             <p className="text-[10px] font-mono uppercase tracking-wider text-ink-3">
               Courses completed
@@ -87,6 +89,7 @@ export default function LearnPage() {
           <div>
             <p className="font-display font-light text-2xl tabular-nums text-ink-1">
               {snapshot.quizzesCompleted}
+              <span className="text-sm text-ink-3">/{stats.totalQuizzes}</span>
             </p>
             <p className="text-[10px] font-mono uppercase tracking-wider text-ink-3">
               Quizzes completed
@@ -100,6 +103,7 @@ export default function LearnPage() {
           <div>
             <p className="font-display font-light text-2xl tabular-nums text-ink-1">
               {snapshot.tutorialsCompleted}
+              <span className="text-sm text-ink-3">/{stats.totalTutorials}</span>
             </p>
             <p className="text-[10px] font-mono uppercase tracking-wider text-ink-3">
               Tutorials completed

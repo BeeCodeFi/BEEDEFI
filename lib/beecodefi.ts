@@ -22,7 +22,7 @@ export const BEECODEFI_URL = "https://beecodefi-edu.vercel.app/";
  * The user's identifier inside BeeCodeFi. Single-user app for now — when this
  * is wired for real, swap to reading from session / env / auth context.
  */
-export const BEECODEFI_USER_ID = "akumar@payliance.com";
+export const BEECODEFI_USER_ID = "kumaryursh@gmail.com";
 
 export type LearningPath = {
   id: string;
@@ -80,17 +80,52 @@ export async function getLearningSnapshot(
 }
 
 // ---------------------------------------------------------------------------
-// Your learning state. Update currentPath as you progress through a course,
-// bump streakDays each day you study, and add to recentActivity and
-// upcomingReviews as they happen.
+// BeeCodeFi platform content — fetched dynamically via /api/beecodefi.
+// The API route scrapes the live BeeCodeFi pages and caches for 1 hour.
+// Fallback values below are used if the fetch fails.
 // ---------------------------------------------------------------------------
 
+export type BeeCodeFiStats = {
+  totalCourses: number;
+  totalCourseVideos: number;
+  totalTutorials: number;
+  totalLessons: number;
+  totalQuizzes: number;
+  totalQuestions: number;
+  tutorials: { name: string; lessons: number }[];
+  quizCategories: { name: string; topics: number }[];
+  fetchedAt: string;
+};
+
+export const BEECODEFI_STATS_FALLBACK: BeeCodeFiStats = {
+  totalTutorials: 3,
+  totalLessons: 35,
+  totalQuizzes: 18,
+  totalQuestions: 90,
+  totalCourses: 1,
+  totalCourseVideos: 10,
+  tutorials: [],
+  quizCategories: [],
+  fetchedAt: "",
+};
+
 const SNAPSHOT: LearningSnapshot = {
-  currentPath: null,
+  currentPath: {
+    id: "web-dev-fundamentals",
+    title: "Web Development Fundamentals",
+    progress: 0,
+    totalLessons: 35,
+    completedLessons: 0,
+    etaMinutes: 835,
+  },
   streakDays: 0,
   studiedToday: false,
   recentActivity: [],
-  upcomingReviews: [],
+  upcomingReviews: [
+    { id: "quiz-html", topic: "HTML Fundamentals", dueInMinutes: 0, deck: "HTML · 6 topics" },
+    { id: "quiz-css", topic: "CSS Mastery", dueInMinutes: 0, deck: "CSS · 6 topics" },
+    { id: "quiz-js", topic: "JavaScript Essentials", dueInMinutes: 0, deck: "JS · 6 topics" },
+  ],
   coursesCompleted: 0,
   quizzesCompleted: 0,
   tutorialsCompleted: 0,
