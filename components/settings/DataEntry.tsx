@@ -724,6 +724,9 @@ function LearningTab({ onSave }: { onSave: () => void }) {
     studiedToday: false,
     recentActivity: [],
     upcomingReviews: [],
+    coursesCompleted: 0,
+    quizzesCompleted: 0,
+    tutorialsCompleted: 0,
     lastSyncedAt: null,
   });
 

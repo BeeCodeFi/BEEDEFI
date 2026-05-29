@@ -58,6 +58,10 @@ export type LearningSnapshot = {
   studiedToday: boolean;
   recentActivity: LearningActivity[];
   upcomingReviews: ReviewItem[];
+  /** Completion counters */
+  coursesCompleted: number;
+  quizzesCompleted: number;
+  tutorialsCompleted: number;
   /** ISO string. null until first sync. */
   lastSyncedAt: string | null;
 };
@@ -87,5 +91,8 @@ const SNAPSHOT: LearningSnapshot = {
   studiedToday: false,
   recentActivity: [],
   upcomingReviews: [],
+  coursesCompleted: 0,
+  quizzesCompleted: 0,
+  tutorialsCompleted: 0,
   lastSyncedAt: null,
 };

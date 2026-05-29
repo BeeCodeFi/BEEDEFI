@@ -158,6 +158,9 @@ export function useLearningData(refreshKey = 0): LearningSnapshot {
     studiedToday: false,
     recentActivity: [],
     upcomingReviews: [],
+    coursesCompleted: 0,
+    quizzesCompleted: 0,
+    tutorialsCompleted: 0,
     lastSyncedAt: null,
   });
 

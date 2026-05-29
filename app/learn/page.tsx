@@ -1,7 +1,7 @@
 "use client";
 
 import { useState, useCallback } from "react";
-import { Flame, BookOpen, Clock, Calendar, ExternalLink } from "lucide-react";
+import { Flame, BookOpen, Clock, Calendar, ExternalLink, GraduationCap, HelpCircle, FileText } from "lucide-react";
 import { Card, CardHeader, CardTitle } from "@/components/ui/Card";
 import { GlassPanel } from "@/components/ui/GlassPanel";
 import { ProgressRing } from "@/components/ui/ProgressRing";
@@ -64,6 +64,49 @@ export default function LearnPage() {
           />
         </a>
       </header>
+
+      {/* COMPLETION STATS */}
+      <section className="grid grid-cols-1 sm:grid-cols-3 gap-4 mb-6">
+        <GlassPanel className="p-4 flex items-center gap-4">
+          <div className="p-2.5 rounded-lg bg-signal-amber/10">
+            <GraduationCap className="w-5 h-5 text-signal-amber" strokeWidth={1.5} />
+          </div>
+          <div>
+            <p className="font-display font-light text-2xl tabular-nums text-ink-1">
+              {snapshot.coursesCompleted}
+            </p>
+            <p className="text-[10px] font-mono uppercase tracking-wider text-ink-3">
+              Courses completed
+            </p>
+          </div>
+        </GlassPanel>
+        <GlassPanel className="p-4 flex items-center gap-4">
+          <div className="p-2.5 rounded-lg bg-signal-cyan/10">
+            <HelpCircle className="w-5 h-5 text-signal-cyan" strokeWidth={1.5} />
+          </div>
+          <div>
+            <p className="font-display font-light text-2xl tabular-nums text-ink-1">
+              {snapshot.quizzesCompleted}
+            </p>
+            <p className="text-[10px] font-mono uppercase tracking-wider text-ink-3">
+              Quizzes completed
+            </p>
+          </div>
+        </GlassPanel>
+        <GlassPanel className="p-4 flex items-center gap-4">
+          <div className="p-2.5 rounded-lg bg-signal-magenta/10">
+            <FileText className="w-5 h-5 text-signal-magenta" strokeWidth={1.5} />
+          </div>
+          <div>
+            <p className="font-display font-light text-2xl tabular-nums text-ink-1">
+              {snapshot.tutorialsCompleted}
+            </p>
+            <p className="text-[10px] font-mono uppercase tracking-wider text-ink-3">
+              Tutorials completed
+            </p>
+          </div>
+        </GlassPanel>
+      </section>
 
       {/* CURRENT PATH — big hero card */}
       <section className="mb-6">

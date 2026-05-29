@@ -15,6 +15,9 @@ export function LearningEntry({ onSaved }: { onSaved?: () => void }) {
     studiedToday: false,
     recentActivity: [],
     upcomingReviews: [],
+    coursesCompleted: 0,
+    quizzesCompleted: 0,
+    tutorialsCompleted: 0,
     lastSyncedAt: null,
   });
   const { saved, showSaved } = useSaveFlash();
@@ -57,6 +60,19 @@ export function LearningEntry({ onSaved }: { onSaved?: () => void }) {
               <option value="yes">Yes</option>
               <option value="no">No</option>
             </Select>
+          </Field>
+        </div>
+
+        <h4 className="text-[10px] font-mono uppercase tracking-[0.2em] text-ink-3 mb-3">Completion Stats</h4>
+        <div className="grid grid-cols-1 sm:grid-cols-3 gap-4 mb-4">
+          <Field label="Courses completed">
+            <Input type="number" min={0} value={snapshot.coursesCompleted} onChange={(e) => update({ coursesCompleted: Number(e.target.value) })} />
+          </Field>
+          <Field label="Quizzes completed">
+            <Input type="number" min={0} value={snapshot.quizzesCompleted} onChange={(e) => update({ quizzesCompleted: Number(e.target.value) })} />
+          </Field>
+          <Field label="Tutorials completed">
+            <Input type="number" min={0} value={snapshot.tutorialsCompleted} onChange={(e) => update({ tutorialsCompleted: Number(e.target.value) })} />
           </Field>
         </div>
 
