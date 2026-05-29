@@ -155,19 +155,25 @@ export function ScriptGenerator({ drafts }: Props) {
           Recent drafts
         </p>
         <div className="flex flex-col gap-2">
-          {drafts.map((d) => (
-            <GlassPanel key={d.id} className="p-3 group cursor-pointer hover:border-edge-strong transition-colors">
-              <p className="text-[13px] font-display text-ink-1 leading-snug">
-                {d.title}
-              </p>
-              <p className="mt-1 text-[11px] text-ink-2 line-clamp-2 leading-snug">
-                {d.preview}
-              </p>
-              <p className="mt-2 text-[10px] font-mono tabular-nums text-ink-3">
-                {Math.round(d.durationSec / 60)}m · {d.createdAgoMin}m ago
-              </p>
-            </GlassPanel>
-          ))}
+          {drafts.length === 0 ? (
+            <p className="text-[11px] font-mono uppercase tracking-wider text-ink-4 px-1 py-3">
+              No drafts yet
+            </p>
+          ) : (
+            drafts.map((d) => (
+              <GlassPanel key={d.id} className="p-3 group cursor-pointer hover:border-edge-strong transition-colors">
+                <p className="text-[13px] font-display text-ink-1 leading-snug">
+                  {d.title}
+                </p>
+                <p className="mt-1 text-[11px] text-ink-2 line-clamp-2 leading-snug">
+                  {d.preview}
+                </p>
+                <p className="mt-2 text-[10px] font-mono tabular-nums text-ink-3">
+                  {Math.round(d.durationSec / 60)}m · {d.createdAgoMin}m ago
+                </p>
+              </GlassPanel>
+            ))
+          )}
         </div>
       </aside>
     </div>

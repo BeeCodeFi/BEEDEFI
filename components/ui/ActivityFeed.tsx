@@ -17,6 +17,14 @@ type Props = {
 };
 
 export function ActivityFeed({ items, className }: Props) {
+  if (items.length === 0) {
+    return (
+      <p className={cn("text-[11px] font-mono uppercase tracking-wider text-ink-4", className)}>
+        No activity yet
+      </p>
+    );
+  }
+
   return (
     <ul className={cn("flex flex-col gap-2", className)}>
       {items.map((item, i) => (

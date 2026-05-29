@@ -13,6 +13,7 @@ import { isLiveAiConfigured } from "@/lib/ai/client";
 import { getMemoryStatsAction } from "@/lib/ai/actions";
 import { BEECODEFI_URL, BEECODEFI_USER_ID } from "@/lib/beecodefi";
 import { ClearMemoryButton } from "@/components/settings/ClearMemoryButton";
+import { BackupPanel } from "@/components/settings/BackupPanel";
 
 /**
  * /settings — workspace configuration surface. Server component reads runtime
@@ -146,6 +147,18 @@ export default async function SettingsPage() {
           />
         </Card>
       </div>
+
+      {/* DATA BACKUP */}
+      <section className="mt-10">
+        <h2 className="font-display text-xl font-light tracking-tight text-ink-1 mb-2">
+          Data backup
+        </h2>
+        <p className="text-sm text-ink-2 mb-6">
+          Export or import all your localStorage data. Use the editor on each
+          section&rsquo;s page to add or edit entries.
+        </p>
+        <BackupPanel />
+      </section>
     </div>
   );
 }

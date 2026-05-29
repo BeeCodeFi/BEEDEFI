@@ -1,16 +1,21 @@
+"use client";
+
+import { useState, useCallback } from "react";
 import { Activity, Moon, Footprints, Zap, HeartPulse, Droplet } from "lucide-react";
 import { Card, CardHeader, CardTitle } from "@/components/ui/Card";
 import { GlassPanel } from "@/components/ui/GlassPanel";
 import { ProgressRing } from "@/components/ui/ProgressRing";
 import { ActivityFeed } from "@/components/ui/ActivityFeed";
+import { InlineEntryPanel } from "@/components/ui/InlineEntryPanel";
+import { HealthEntry } from "@/components/health/HealthEntry";
 import { cn } from "@/lib/cn";
 import {
-  getHealthSnapshot,
   ENERGY_ACCENT,
   ENERGY_LABEL,
   type DailyPoint,
   type HealthSnapshot,
 } from "@/lib/health";
+import { useHealthData } from "@/lib/useStore";
 
 /**
  * /health — energy, sleep, and movement. Server-rendered with a snapshot, all
@@ -23,8 +28,10 @@ const ACCENT_TEXT = {
   amber: "text-signal-amber",
 } as const;
 
-export default async function HealthPage() {
-  const snap = await getHealthSnapshot();
+export default function HealthPage() {
+  const [refreshKey, setRefreshKey] = useState(0);
+  const snap = useHealthData(refreshKey);
+  const handleSaved = useCallback(() => setRefreshKey((k) => k + 1), []);
   const energyAccent = ENERGY_ACCENT[snap.energyBand];
 
   return (
@@ -65,8 +72,9 @@ export default async function HealthPage() {
                 </span>
               </div>
               <p className="mt-2 text-[13px] text-ink-2 leading-relaxed max-w-md">
-                Sleep quality solid, HRV trending up, movement light. Good day
-                to attempt the harder block of work; ease into evening cardio.
+                {snap.energyIndex === 0
+                  ? "Log today's sleep, steps, and active minutes to get your energy reading."
+                  : "Sleep quality solid, HRV trending up, movement light. Good day to attempt the harder block of work; ease into evening cardio."}
               </p>
             </div>
 
@@ -142,6 +150,10 @@ export default async function HealthPage() {
           </ul>
         </Card>
       </section>
+
+      <InlineEntryPanel accent="cyan">
+        <HealthEntry onSaved={handleSaved} />
+      </InlineEntryPanel>
     </div>
   );
 }

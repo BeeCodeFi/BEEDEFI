@@ -60,6 +60,19 @@ export function Timeline({ notes }: Props) {
       .filter((b) => b.notes.length > 0);
   }, [notes]);
 
+  if (grouped.length === 0) {
+    return (
+      <div className="flex flex-col items-center justify-center py-16 gap-3">
+        <p className="text-[11px] font-mono uppercase tracking-[0.2em] text-ink-4">
+          No notes yet
+        </p>
+        <p className="text-[12px] text-ink-3 text-center max-w-xs leading-relaxed">
+          Use the journal below to capture your first thought — it will appear here.
+        </p>
+      </div>
+    );
+  }
+
   return (
     <div className="flex flex-col gap-7">
       {grouped.map((bucket) => (

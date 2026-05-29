@@ -48,29 +48,18 @@ export async function getCareerSnapshot(): Promise<CareerSnapshot> {
 
 const STAGES: ApplicationStage[] = ["applied", "phone", "onsite", "offer", "rejected"];
 
-const APPLICATIONS: Application[] = [
-  { id: "a1",  company: "Anchor Systems",     role: "Senior Distributed Systems Eng",   stage: "onsite",   daysIdle: 2,  bandHint: "$220–260k" },
-  { id: "a2",  company: "Helix Robotics",     role: "Staff Backend Eng",                stage: "phone",    daysIdle: 5 },
-  { id: "a3",  company: "Quill AI",           role: "Founding Engineer",                stage: "offer",    daysIdle: 1,  bandHint: "$180–220k + eq" },
-  { id: "a4",  company: "Norther Labs",       role: "Senior Platform Eng",              stage: "applied",  daysIdle: 11 },
-  { id: "a5",  company: "Mercury Compute",    role: "Tech Lead, Storage",               stage: "onsite",   daysIdle: 4 },
-  { id: "a6",  company: "Lighthouse Data",    role: "Senior Eng, Analytics",            stage: "applied",  daysIdle: 18 },
-  { id: "a7",  company: "Drift Audio",        role: "Senior Eng, Realtime",             stage: "rejected", daysIdle: 9 },
-  { id: "a8",  company: "Pleiades Health",    role: "Staff Eng, Patient Platform",      stage: "applied",  daysIdle: 3 },
-  { id: "a9",  company: "Spool",              role: "Senior Eng, Pipelines",            stage: "phone",    daysIdle: 8 },
-  { id: "a10", company: "Bowline AI",         role: "Founding Eng (Infra)",             stage: "applied",  daysIdle: 7 },
-  { id: "a11", company: "Folio",              role: "Senior Eng, Editor Surfaces",      stage: "rejected", daysIdle: 24 },
-  { id: "a12", company: "Citizen Compute",    role: "Senior Backend Eng",               stage: "applied",  daysIdle: 1 },
-];
+// ---------------------------------------------------------------------------
+// Your pipeline. Add applications here as you apply — the kanban columns and
+// stats update automatically.
+// ---------------------------------------------------------------------------
 
-const PREP: PrepItem[] = [
-  { id: "p1", topic: "Designing a distributed log",            kind: "system-design", confidence: 78 },
-  { id: "p2", topic: "Behavioral: conflict story arc",         kind: "behavioral",    confidence: 64 },
-  { id: "p3", topic: "Graph algos: SCCs, topological order",   kind: "algorithms",    confidence: 55 },
-  { id: "p4", topic: "Storage internals: LSM vs B-tree",       kind: "domain",        confidence: 82 },
-  { id: "p5", topic: "Designing a multi-region key-value",     kind: "system-design", confidence: 71 },
-  { id: "p6", topic: "Negotiation: anchor on TC, not base",    kind: "behavioral",    confidence: 48 },
-];
+const APPLICATIONS: Application[] = [];
+
+// ---------------------------------------------------------------------------
+// Interview prep tracker. Add topics as you work through them.
+// ---------------------------------------------------------------------------
+
+const PREP: PrepItem[] = [];
 
 const MOCK_SNAPSHOT: CareerSnapshot = {
   applications: APPLICATIONS,
@@ -83,8 +72,8 @@ const MOCK_SNAPSHOT: CareerSnapshot = {
     const active = APPLICATIONS.filter((a) => a.stage !== "rejected").length;
     return {
       activeLeads: active,
-      responseRatePct: 58,
-      avgDaysToReply: 6,
+      responseRatePct: 0,
+      avgDaysToReply: 0,
       byStage,
     };
   })(),

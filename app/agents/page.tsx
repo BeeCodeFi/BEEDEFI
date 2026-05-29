@@ -1,10 +1,13 @@
 "use client";
 
+import { useState, useCallback } from "react";
 import { motion } from "framer-motion";
 import { GlassPanel } from "@/components/ui/GlassPanel";
+import { InlineEntryPanel } from "@/components/ui/InlineEntryPanel";
 import { AgentNetwork } from "@/components/agents/AgentNetwork";
 import { AgentCard } from "@/components/agents/AgentCard";
-import { getAgentsWithState } from "@/lib/agents";
+import { AgentsEntry } from "@/components/agents/AgentsEntry";
+import { useAgentsData } from "@/lib/useStore";
 
 /**
  * The agent dashboard. Layout reads top-down:
@@ -29,7 +32,9 @@ const cascade = {
 };
 
 export default function AgentsPage() {
-  const agents = getAgentsWithState();
+  const [refreshKey, setRefreshKey] = useState(0);
+  const agents = useAgentsData(refreshKey);
+  const handleSaved = useCallback(() => setRefreshKey((k) => k + 1), []);
 
   const counts = {
     working: agents.filter((a) => a.state.status === "working").length,
@@ -104,6 +109,10 @@ export default function AgentsPage() {
           ))}
         </div>
       </section>
+
+      <InlineEntryPanel accent="magenta">
+        <AgentsEntry onSaved={handleSaved} />
+      </InlineEntryPanel>
     </div>
   );
 }

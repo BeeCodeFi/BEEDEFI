@@ -2,6 +2,7 @@
 
 import { motion, useMotionValue, useSpring, useTransform, type MotionValue } from "framer-motion";
 import { useEffect, useRef, useState } from "react";
+import { useRouter } from "next/navigation";
 import {
   Plus,
   Search,
@@ -11,6 +12,7 @@ import {
   type LucideIcon,
 } from "lucide-react";
 import { cn } from "@/lib/cn";
+import { CommandPalette } from "./CommandPalette";
 
 /**
  * macOS-style dock with proximity magnification — on fine-pointer devices.
@@ -31,16 +33,10 @@ type DockAction = {
   onClick?: () => void;
 };
 
-const DOCK_ACTIONS: DockAction[] = [
-  { icon: Plus, label: "New", accent: "cyan" },
-  { icon: Search, label: "Search" },
-  { icon: Sparkles, label: "Ask AI", accent: "magenta" },
-  { icon: Mic, label: "Voice" },
-  { icon: Command, label: "Palette" },
-];
-
 export function FloatingDock() {
   const mouseX = useMotionValue(Infinity);
+  const router = useRouter();
+  const [paletteOpen, setPaletteOpen] = useState(false);
   // Pointer-type detection runs in an effect so SSR markup is stable. The
   // first paint shows the desktop variant; if the user is on touch, the effect
   // flips it on the next frame. The visual delta is small enough that no flash
@@ -55,33 +51,56 @@ export function FloatingDock() {
     return () => mq.removeEventListener("change", onChange);
   }, []);
 
+  // Global Cmd+K / Ctrl+K to toggle palette
+  useEffect(() => {
+    const handler = (e: KeyboardEvent) => {
+      if ((e.metaKey || e.ctrlKey) && e.key === "k") {
+        e.preventDefault();
+        setPaletteOpen((prev) => !prev);
+      }
+    };
+    window.addEventListener("keydown", handler);
+    return () => window.removeEventListener("keydown", handler);
+  }, []);
+
+  const DOCK_ACTIONS: DockAction[] = [
+    { icon: Plus, label: "New", accent: "cyan", onClick: () => router.push("/brain") },
+    { icon: Search, label: "Search", onClick: () => setPaletteOpen(true) },
+    { icon: Sparkles, label: "Ask AI", accent: "magenta", onClick: () => router.push("/studio") },
+    { icon: Mic, label: "Voice", onClick: () => router.push("/agents") },
+    { icon: Command, label: "Palette", onClick: () => setPaletteOpen(true) },
+  ];
+
   return (
-    <motion.div
-      onMouseMove={isFinePointer ? (e) => mouseX.set(e.pageX) : undefined}
-      onMouseLeave={isFinePointer ? () => mouseX.set(Infinity) : undefined}
-      className={cn(
-        "fixed left-1/2 -translate-x-1/2 z-50",
-        // Lift above the iOS home indicator on touch devices.
-        "bottom-4 sm:bottom-6"
-      )}
-      style={{ paddingBottom: "env(safe-area-inset-bottom)" }}
-    >
-      <div
+    <>
+      <CommandPalette open={paletteOpen} onClose={() => setPaletteOpen(false)} />
+      <motion.div
+        onMouseMove={isFinePointer ? (e) => mouseX.set(e.pageX) : undefined}
+        onMouseLeave={isFinePointer ? () => mouseX.set(Infinity) : undefined}
         className={cn(
-          "glass glass-edge rounded-2xl flex items-end",
-          isFinePointer ? "px-3 py-2 gap-2" : "px-2.5 py-2 gap-1.5"
+          "fixed left-1/2 -translate-x-1/2 z-50",
+          // Lift above the iOS home indicator on touch devices.
+          "bottom-4 sm:bottom-6"
         )}
+        style={{ paddingBottom: "env(safe-area-inset-bottom)" }}
       >
-        {DOCK_ACTIONS.map((action) => (
-          <DockItem
-            key={action.label}
-            action={action}
-            mouseX={mouseX}
-            isFinePointer={isFinePointer}
-          />
-        ))}
-      </div>
-    </motion.div>
+        <div
+          className={cn(
+            "glass glass-edge rounded-2xl flex items-end",
+            isFinePointer ? "px-3 py-2 gap-2" : "px-2.5 py-2 gap-1.5"
+          )}
+        >
+          {DOCK_ACTIONS.map((action) => (
+            <DockItem
+              key={action.label}
+              action={action}
+              mouseX={mouseX}
+              isFinePointer={isFinePointer}
+            />
+          ))}
+        </div>
+      </motion.div>
+    </>
   );
 }
 

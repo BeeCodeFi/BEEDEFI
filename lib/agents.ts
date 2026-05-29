@@ -78,88 +78,27 @@ export const AGENTS: Agent[] = [
 ];
 
 /**
- * Mock state. Hand-tuned to read like a plausible weekday afternoon — a mix of
- * statuses so the UI surfaces every variant on first render. Replace with a
- * live source in Phase 6; the shape is intentionally serializable.
+ * Initial state. All agents start idle with no activity — real tasks and
+ * history will accumulate as you use the system. Phase 6 wires this to a
+ * live backend; until then, edit currentTask and add activity entries here
+ * as your day progresses.
  */
-export const MOCK_STATE: Record<AgentId, AgentState> = {
-  content: {
-    status: "working",
-    currentTask: "Drafting Q2 content strategy script",
-    progress: 43,
-    etaMinutes: 12,
-    activity: [
-      { ago: 4,  text: "Synthesized 3 reference notes into a hook" },
-      { ago: 12, text: "Drafted 1,200 words for the long-form arc" },
-      { ago: 23, text: "Pulled 5 analytics events for cold-open data" },
-    ],
-  },
-  learning: {
-    status: "thinking",
-    currentTask: "Scheduling spaced-repetition review batch",
-    progress: 67,
-    etaMinutes: 4,
-    activity: [
-      { ago: 2,  text: "Re-ranked 18 flashcards by retention curve" },
-      { ago: 9,  text: "Added 4 new cards from yesterday's reading" },
-      { ago: 31, text: "Marked 'system design' path 12% further along" },
-    ],
-  },
-  research: {
-    status: "working",
-    currentTask: "Synthesizing distributed-systems failure modes",
-    progress: 78,
-    etaMinutes: 6,
-    activity: [
-      { ago: 1,  text: "Cross-referenced 3 papers on partial failures" },
-      { ago: 8,  text: "Pulled quotes from 2 newsletter back-issues" },
-      { ago: 19, text: "Flagged 1 source as low-confidence" , tone: "alert" },
-    ],
-  },
-  productivity: {
-    status: "idle",
-    currentTask: "Awaiting next focus block",
-    progress: 0,
-    etaMinutes: null,
-    activity: [
-      { ago: 17, text: "Closed the 14:00 focus block — 47m on-task" },
-      { ago: 62, text: "Rescheduled 2 calendar conflicts" },
-      { ago: 94, text: "Surfaced 3 stale tasks to triage" },
-    ],
-  },
-  business: {
-    status: "blocked",
-    currentTask: "Waiting on response from stakeholder review",
-    progress: 35,
-    etaMinutes: null,
-    activity: [
-      { ago: 6,  text: "Drafted decision memo for pricing change" , tone: "alert" },
-      { ago: 38, text: "Updated pipeline: 12 leads → 9 qualified" },
-      { ago: 71, text: "Filed 1 ops anomaly for review" },
-    ],
-  },
-  analytics: {
-    status: "working",
-    currentTask: "Recomputing weekly engagement deltas",
-    progress: 21,
-    etaMinutes: 18,
-    activity: [
-      { ago: 3,  text: "Recomputed 4 dashboards on fresh data" },
-      { ago: 14, text: "Flagged 1 metric anomaly (engagement -22%)" , tone: "alert" },
-      { ago: 41, text: "Backfilled 6 hours of missing events" },
-    ],
-  },
-  health: {
-    status: "idle",
-    currentTask: "Monitoring evening recovery window",
-    progress: 0,
-    etaMinutes: null,
-    activity: [
-      { ago: 22, text: "Logged 6,200 steps — under daily target" },
-      { ago: 48, text: "Detected elevated HRV — energy reading 'high'" },
-      { ago: 86, text: "Reminded user to hydrate" },
-    ],
-  },
+const IDLE: AgentState = {
+  status: "idle",
+  currentTask: "Standing by",
+  progress: 0,
+  etaMinutes: null,
+  activity: [],
+};
+
+export const AGENT_STATE: Record<AgentId, AgentState> = {
+  content:      { ...IDLE },
+  learning:     { ...IDLE },
+  research:     { ...IDLE },
+  productivity: { ...IDLE },
+  business:     { ...IDLE },
+  analytics:    { ...IDLE },
+  health:       { ...IDLE },
 };
 
 /**
@@ -181,5 +120,5 @@ export const AGENT_EDGES: Array<[AgentId, AgentId]> = [
 ];
 
 export function getAgentsWithState(): AgentWithState[] {
-  return AGENTS.map((a) => ({ ...a, state: MOCK_STATE[a.id] }));
+  return AGENTS.map((a) => ({ ...a, state: AGENT_STATE[a.id] }));
 }

@@ -39,6 +39,19 @@ export function KnowledgeGraph({ notes, links }: Props) {
     return <GraphFallback notes={notes} />;
   }
 
+  if (notes.length === 0) {
+    return (
+      <div className="relative h-[380px] sm:h-[440px] md:h-[520px] rounded-2xl overflow-hidden border border-edge flex flex-col items-center justify-center gap-3">
+        <p className="text-[11px] font-mono uppercase tracking-[0.2em] text-ink-4">
+          Graph is empty
+        </p>
+        <p className="text-[12px] text-ink-3 text-center max-w-xs leading-relaxed px-4">
+          Capture your first note below — each note becomes a node in the graph.
+        </p>
+      </div>
+    );
+  }
+
   return (
     <div className="relative h-[380px] sm:h-[440px] md:h-[520px] rounded-2xl overflow-hidden border border-edge">
       <Canvas

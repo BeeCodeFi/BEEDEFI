@@ -1,14 +1,19 @@
+"use client";
+
+import { useState, useCallback } from "react";
 import { Flame, BookOpen, Clock, Calendar, ExternalLink } from "lucide-react";
 import { Card, CardHeader, CardTitle } from "@/components/ui/Card";
 import { GlassPanel } from "@/components/ui/GlassPanel";
 import { ProgressRing } from "@/components/ui/ProgressRing";
 import { ActivityFeed } from "@/components/ui/ActivityFeed";
+import { InlineEntryPanel } from "@/components/ui/InlineEntryPanel";
+import { LearningEntry } from "@/components/learn/LearningEntry";
 import {
   BEECODEFI_URL,
-  getLearningSnapshot,
   type LearningActivity,
   type ReviewItem,
 } from "@/lib/beecodefi";
+import { useLearningData } from "@/lib/useStore";
 
 /**
  * Surface over the user's BeeCodeFi learning state. Server component — the
@@ -18,8 +23,10 @@ import {
  * When BeeCodeFi migrates to NeonDB, this page doesn't change at all; only
  * lib/beecodefi.ts gets a real query body.
  */
-export default async function LearnPage() {
-  const snapshot = await getLearningSnapshot();
+export default function LearnPage() {
+  const [refreshKey, setRefreshKey] = useState(0);
+  const snapshot = useLearningData(refreshKey);
+  const handleSaved = useCallback(() => setRefreshKey((k) => k + 1), []);
 
   // Recent activity uses the same renderer as the agent dashboard, so we map
   // BeeCodeFi's typed events into the generic activity shape.
@@ -157,6 +164,10 @@ export default async function LearnPage() {
           </ul>
         </Card>
       </section>
+
+      <InlineEntryPanel accent="amber">
+        <LearningEntry onSaved={handleSaved} />
+      </InlineEntryPanel>
     </div>
   );
 }

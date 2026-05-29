@@ -1,10 +1,14 @@
+"use client";
+
+import { useState, useCallback } from "react";
 import { Briefcase, ArrowUpRight, Clock } from "lucide-react";
 import { Card, CardHeader, CardTitle } from "@/components/ui/Card";
 import { GlassPanel } from "@/components/ui/GlassPanel";
 import { ProgressRing } from "@/components/ui/ProgressRing";
+import { InlineEntryPanel } from "@/components/ui/InlineEntryPanel";
+import { CareerEntry } from "@/components/career/CareerEntry";
 import { cn } from "@/lib/cn";
 import {
-  getCareerSnapshot,
   STAGE_LABELS,
   STAGE_ACCENT,
   PREP_KIND_LABEL,
@@ -12,6 +16,7 @@ import {
   type ApplicationStage,
   type PrepItem,
 } from "@/lib/career";
+import { useCareerData } from "@/lib/useStore";
 
 /**
  * /career — application pipeline + interview prep tracker. Server component
@@ -40,8 +45,10 @@ const ACCENT_BORDER: Record<"cyan" | "magenta" | "amber" | "violet" | "ink", str
   ink: "border-edge",
 };
 
-export default async function CareerPage() {
-  const snap = await getCareerSnapshot();
+export default function CareerPage() {
+  const [refreshKey, setRefreshKey] = useState(0);
+  const snap = useCareerData(refreshKey);
+  const handleSaved = useCallback(() => setRefreshKey((k) => k + 1), []);
   const grouped = STAGE_ORDER.map((s) => ({
     stage: s,
     items: snap.applications.filter((a) => a.stage === s),
@@ -136,6 +143,10 @@ export default async function CareerPage() {
           ))}
         </div>
       </section>
+
+      <InlineEntryPanel accent="cyan">
+        <CareerEntry onSaved={handleSaved} />
+      </InlineEntryPanel>
     </div>
   );
 }

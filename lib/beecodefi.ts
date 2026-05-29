@@ -65,38 +65,27 @@ export type LearningSnapshot = {
 /**
  * Read the user's current learning snapshot from BeeCodeFi.
  *
- * STUBBED — returns mock data. See module header for the migration plan.
+ * STUBBED — returns live data from the constants below. See module header
+ * for the NeonDB migration plan. Update the fields below as your learning
+ * progresses; Phase 6 will sync this automatically.
  */
 export async function getLearningSnapshot(
   _userId: string = BEECODEFI_USER_ID
 ): Promise<LearningSnapshot> {
-  return MOCK_SNAPSHOT;
+  return SNAPSHOT;
 }
 
-const MOCK_SNAPSHOT: LearningSnapshot = {
-  currentPath: {
-    id: "ds-fundamentals",
-    title: "Distributed Systems · Fundamentals",
-    progress: 62,
-    totalLessons: 24,
-    completedLessons: 15,
-    etaMinutes: 38,
-  },
-  streakDays: 23,
-  studiedToday: true,
-  recentActivity: [
-    { ago: 18,  text: "Completed 'Consensus & Quorums' lesson",                kind: "lesson"    },
-    { ago: 47,  text: "Reviewed 12 cards — 91% recall",                        kind: "review"    },
-    { ago: 96,  text: "Passed 'CAP Theorem' quiz — 9/10",                      kind: "quiz"      },
-    { ago: 240, text: "Started 'Distributed Systems · Fundamentals' path",     kind: "milestone" },
-    { ago: 1440, text: "Wrapped 'Networking · Foundations' — 100%",             kind: "milestone" },
-  ],
-  upcomingReviews: [
-    { id: "r1", topic: "Vector clocks",          dueInMinutes: -12, deck: "Distributed systems" },
-    { id: "r2", topic: "Raft leader election",   dueInMinutes: 25,  deck: "Distributed systems" },
-    { id: "r3", topic: "TCP slow start",         dueInMinutes: 180, deck: "Networking"          },
-    { id: "r4", topic: "Bloom filters",          dueInMinutes: 240, deck: "Data structures"     },
-    { id: "r5", topic: "Read-repair vs anti-entropy", dueInMinutes: 1380, deck: "Distributed systems" },
-  ],
+// ---------------------------------------------------------------------------
+// Your learning state. Update currentPath as you progress through a course,
+// bump streakDays each day you study, and add to recentActivity and
+// upcomingReviews as they happen.
+// ---------------------------------------------------------------------------
+
+const SNAPSHOT: LearningSnapshot = {
+  currentPath: null,
+  streakDays: 0,
+  studiedToday: false,
+  recentActivity: [],
+  upcomingReviews: [],
   lastSyncedAt: null,
 };

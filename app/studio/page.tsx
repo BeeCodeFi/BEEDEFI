@@ -1,15 +1,21 @@
-import { getStudioSnapshot } from "@/lib/studio";
-import { isLiveAiConfigured } from "@/lib/ai/client";
+"use client";
+
+import { useState, useCallback } from "react";
 import { StudioShell } from "@/components/studio/StudioShell";
+import { InlineEntryPanel } from "@/components/ui/InlineEntryPanel";
+import { StudioEntry } from "@/components/studio/StudioEntry";
+import { useStudioData } from "@/lib/useStore";
 
 /**
- * /studio — Creator-studio dashboard. Server component fetches snapshot data
+ * /studio — Creator-studio dashboard. Client component reads from localStorage
  * and hands off to a client tab shell. Generations go through server actions
  * defined in lib/ai/actions.ts so the API key never crosses the wire.
  */
-export default async function StudioPage() {
-  const snapshot = await getStudioSnapshot();
-  const liveAi = isLiveAiConfigured();
+export default function StudioPage() {
+  const [refreshKey, setRefreshKey] = useState(0);
+  const snapshot = useStudioData(refreshKey);
+  const handleSaved = useCallback(() => setRefreshKey((k) => k + 1), []);
+  const liveAi = false; // Client can't check env — stub badge until wired
 
   return (
     <div className="relative min-h-screen px-4 sm:px-6 md:px-8 lg:px-12 xl:px-16 pt-6 sm:pt-10 lg:pt-12 pb-32">
@@ -44,6 +50,10 @@ export default async function StudioPage() {
       </header>
 
       <StudioShell snapshot={snapshot} />
+
+      <InlineEntryPanel accent="magenta">
+        <StudioEntry onSaved={handleSaved} />
+      </InlineEntryPanel>
     </div>
   );
 }

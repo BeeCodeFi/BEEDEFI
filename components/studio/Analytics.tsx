@@ -16,6 +16,19 @@ export function Analytics({ content }: Props) {
   const topEngagement = [...content].sort((a, b) => b.engagement - a.engagement)[0];
   const weakestRetention = [...content].sort((a, b) => a.retentionPct - b.retentionPct)[0];
 
+  if (content.length === 0) {
+    return (
+      <div className="flex flex-col items-center justify-center py-24 gap-3">
+        <p className="text-[11px] font-mono uppercase tracking-[0.2em] text-ink-4">
+          No content data yet
+        </p>
+        <p className="text-[12px] text-ink-3 text-center max-w-xs leading-relaxed">
+          Add published pieces to lib/studio.ts to see analytics here.
+        </p>
+      </div>
+    );
+  }
+
   return (
     <div className="flex flex-col gap-6">
       {/* OVERVIEW STRIP */}
